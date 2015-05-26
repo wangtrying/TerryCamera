@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -85,6 +86,8 @@ public class FullscreenActivity extends Activity {
         };
         Thread t = new Thread(r);
         t.start();
+        Toast.makeText(this, "是不是?", Toast.LENGTH_LONG).show();
+
     }
 
 
@@ -101,6 +104,8 @@ public class FullscreenActivity extends Activity {
         };
         Thread t = new Thread(r);
         t.start();
+
+        Toast.makeText(this, "美美的~~~", Toast.LENGTH_LONG).show();
     }
 
     private void playHereItComes() {
@@ -116,6 +121,8 @@ public class FullscreenActivity extends Activity {
         };
         Thread t = new Thread(r);
         t.start();
+        Toast.makeText(this, "來了麻~~~", Toast.LENGTH_LONG).show();
+
     }
 
     @Override
@@ -161,6 +168,7 @@ public class FullscreenActivity extends Activity {
     public void onBackPressed() {
         if (shouldBackToCamera){
             dispatchTakePictureIntent();
+            playHereItComes();
             shouldBackToCamera = false;
         }else{
             super.onBackPressed();
