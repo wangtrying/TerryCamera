@@ -5,10 +5,10 @@ android {
     buildToolsVersion "21.1.2"
     defaultConfig {
         applicationId "tw.idv.terry.terrycamera"
-        minSdkVersion 21
+        minSdkVersion 8
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName '1.2'
     }
     buildTypes {
         release {

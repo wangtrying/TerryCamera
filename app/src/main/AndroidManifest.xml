@@ -2,15 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tw.idv.terry.terrycamera">
 
-    <uses-sdk
-        android:minSdkVersion="21"
-        android:targetSdkVersion="21" />
-    <uses-feature android:name="com.android.hardware.camera2.full"/>
     <uses-permission android:name="android.permission.CAMERA"/>
-
-
-    <uses-permission android:name="android.permission.camera"/>
-    <uses-permission android:name="android.permission.write_external_storage" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
