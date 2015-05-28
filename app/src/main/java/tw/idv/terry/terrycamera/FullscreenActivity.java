@@ -246,6 +246,7 @@ public class FullscreenActivity extends Activity {
 
     private void galleryAddPic() {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        mediaScanIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         File f = new File(mCurrentPhotoPath);
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
