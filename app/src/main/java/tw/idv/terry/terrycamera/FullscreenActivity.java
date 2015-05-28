@@ -1,63 +1,62 @@
 package tw.idv.terry.terrycamera;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import tw.idv.terry.terrycamera.talker.TerryTalker;
+
 public class FullscreenActivity extends Activity {
 
     private final static String TAG = "SimpleCamera";
     private static final int REQUEST_IMAGE_CAPTURE = 0x01;
     private Button mAlbumBtn;
-    private MediaPlayer mHereItComesPlayer, mBeautifulPlayer, mIsntItPlayer;
+
     private ImageView mImageView;
     private TextView mTextView;
     private String mCurrentPhotoPath;
     private volatile boolean shouldBackToCamera = false;
+    private TerryTalker mTalker;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fullscreen);
-        ensureMaxVolume();
-        playHereItComes();
+        initTalker();
+        mTalker.ensureMaxVolume();
+        mTalker.playHereItComes();
         prepareViews();
         dispatchTakePictureIntent();
 
     }
 
-    private void ensureMaxVolume() {
-        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-
-        int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        if (currentVolume != audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)) {
-            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), AudioManager.FLAG_PLAY_SOUND);
+    private void initTalker() {
+        try {
+            mTalker = new TerryTalker(this);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
+
 
     private void prepareViews() {
         mImageView = (ImageView) findViewById(R.id.image_taken);
@@ -65,7 +64,7 @@ public class FullscreenActivity extends Activity {
     }
 
     public void onAlbum(View aView) {
-        playIsntIt();
+        mTalker.playIsntIt();
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setType("image/*");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -73,78 +72,12 @@ public class FullscreenActivity extends Activity {
     }
 
 
-    private void playIsntIt() {
-        mIsntItPlayer = MediaPlayer.create(this, R.raw.isntit);
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                mIsntItPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                mIsntItPlayer.setLooping(false);
-                mIsntItPlayer.start();
-
-            }
-        };
-        Thread t = new Thread(r);
-        t.start();
-        Toast.makeText(this, "是不是?", Toast.LENGTH_LONG).show();
-
-    }
-
-
-    private void playBeautiful() {
-        mBeautifulPlayer = MediaPlayer.create(this, R.raw.beautiful);
-
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                mBeautifulPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                mBeautifulPlayer.setLooping(false);
-                mBeautifulPlayer.start();
-            }
-        };
-        Thread t = new Thread(r);
-        t.start();
-
-        Toast.makeText(this, "美美的~~~", Toast.LENGTH_LONG).show();
-    }
-
-    private void playHereItComes() {
-        mHereItComesPlayer = MediaPlayer.create(this, R.raw.herecomes);
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                mHereItComesPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                mHereItComesPlayer.setLooping(false);
-                mHereItComesPlayer.start();
-
-            }
-        };
-        Thread t = new Thread(r);
-        t.start();
-        Toast.makeText(this, "來了麻~~~", Toast.LENGTH_LONG).show();
-
-    }
-
     @Override
     protected void onDestroy() {
-        releasePlayers();
+        mTalker.releasePlayers();
         super.onDestroy();
-
     }
 
-    private void releasePlayers() {
-
-        if (mBeautifulPlayer != null) {
-            mBeautifulPlayer.release();
-        }
-
-        if (mIsntItPlayer != null) {
-            mIsntItPlayer.release();
-        }
-        if (mHereItComesPlayer != null) {
-            mHereItComesPlayer.release();
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -152,7 +85,7 @@ public class FullscreenActivity extends Activity {
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                playBeautiful();
+                mTalker.playBeautiful();
                 galleryAddPic();
 //                mTextView.setText("美美的～");
                 setPic();
@@ -166,11 +99,11 @@ public class FullscreenActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if (shouldBackToCamera){
+        if (shouldBackToCamera) {
             dispatchTakePictureIntent();
-            playHereItComes();
+            mTalker.playHereItComes();
             shouldBackToCamera = false;
-        }else{
+        } else {
             super.onBackPressed();
         }
     }
@@ -191,7 +124,7 @@ public class FullscreenActivity extends Activity {
         int photoH = bmOptions.outHeight;
 
         // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
@@ -214,7 +147,7 @@ public class FullscreenActivity extends Activity {
                 storageDir      /* directory */
         );
 
-        if (image.exists() == false){
+        if (image.exists() == false) {
             image.createNewFile();
         }
 
