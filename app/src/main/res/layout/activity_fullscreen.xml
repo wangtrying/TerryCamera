@@ -1,17 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/image_taken"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
+    android:onClick="onAlbum"
     tools:context=".FullscreenActivity">
 
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/image_taken"
-        android:onClick="onAlbum"/>
-
-<!--
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -19,32 +14,35 @@
         android:background="#556655">
 
 
-
         <Button
-            android:layout_width="50dp"
-            android:layout_height="50dp"
             android:id="@+id/album_button"
-            android:onClick="onAlbum"/>
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:onClick="onAlbum"
+            android:text="簿相"
+            android:singleLine="true" />
+
+
+        <!--<Button-->
+            <!--android:id="@+id/capture_button"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:onClick="onCapture"-->
+            <!--android:text="機相"-->
+            <!--android:singleLine="true"-->
+            <!--android:layout_centerHorizontal="true" />-->
 
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/toAlbum"
-            android:layout_toRightOf="@+id/album_button"
-            android:gravity="center"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
             android:id="@+id/speech_text"
-            android:text="來了麻~"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:gravity="center"
+            android:text="~麻了來"
             android:textSize="30sp"
             android:textStyle="bold" />
 
     </RelativeLayout>
--->
 </RelativeLayout>

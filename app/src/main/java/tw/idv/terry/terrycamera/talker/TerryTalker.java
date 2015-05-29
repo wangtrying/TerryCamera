@@ -51,17 +51,19 @@ public class TerryTalker {
         };
         Thread t = new Thread(r);
         t.start();
-        Toast.makeText(mContext, "是不是?", Toast.LENGTH_LONG).show();
+//        Toast.makeText(mContext, "是不是?", Toast.LENGTH_LONG).show();
     }
 
     private void gaRecord(String aLabel) {
-        HitBuilders.EventBuilder event = new HitBuilders.EventBuilder();
-        event.setCategory("UX");
-        event.setAction("play");
-        event.setLabel(aLabel);
-        Tracker tracker = TerryCameraApp.getTracker();
-        tracker.setScreenName("FullScreenActivity");
-        tracker.send(event.build());
+        if (!TerryCameraApp.IS_DEBUG) {
+            HitBuilders.EventBuilder event = new HitBuilders.EventBuilder();
+            event.setCategory("UX");
+            event.setAction("play");
+            event.setLabel(aLabel);
+            Tracker tracker = TerryCameraApp.getTracker();
+            tracker.setScreenName("FullScreenActivity");
+            tracker.send(event.build());
+        }
     }
 
     private void initBeautifulPlayer() {
@@ -87,7 +89,7 @@ public class TerryTalker {
         Thread t = new Thread(r);
         t.start();
 
-        Toast.makeText(mContext, "美美的~~~", Toast.LENGTH_LONG).show();
+//        Toast.makeText(mContext, "美美的~~~", Toast.LENGTH_LONG).show();
     }
 
 
@@ -114,7 +116,7 @@ public class TerryTalker {
         };
         Thread t = new Thread(r);
         t.start();
-        Toast.makeText(mContext, "來了麻~~~", Toast.LENGTH_LONG).show();
+//        Toast.makeText(mContext, "來了麻~~~", Toast.LENGTH_LONG).show();
 
     }
 
